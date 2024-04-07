@@ -11,8 +11,11 @@ public class PlayerController : MonoBehaviour
 
     Vector3 velocity;
 
+    public static PlayerController instance;
+
     private void Awake()
     {
+        instance = this;
         controller = GetComponent<CharacterController>();
     }
 
