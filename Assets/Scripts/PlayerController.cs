@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController instance;
 
+    public bool canMove = true;
+
     private void Awake()
     {
         instance = this;
@@ -23,6 +25,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!canMove)
+        {
+            return;
+        }
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 

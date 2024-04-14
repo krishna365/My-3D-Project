@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(AudioSource))]
 public class DoorOpen : MonoBehaviour
 {
     public static DoorOpen instance;
 
     [SerializeField] Animator animator;
+    [SerializeField] AudioClip clip;
+
+    public bool isOpen = false;
 
     private void Awake()
     {
         instance = this;
+        GetComponent<AudioSource>().playOnAwake = false;
+        GetComponent<AudioSource>().clip = clip;
     }
 
     private void Update()
@@ -25,7 +32,7 @@ public class DoorOpen : MonoBehaviour
                     activate = false;
                 }
             }
-            if (activate)
+            if (activate && !isOpen)
             {
                 OpenDoor();
             }
@@ -35,6 +42,8 @@ public class DoorOpen : MonoBehaviour
     public void OpenDoor()
     {
         animator.SetTrigger("Open");
+        isOpen = true;
+        GetComponent<AudioSource>().Play();
     }
 
     public void CloseDoorAfterSeconds(float seconds)
@@ -46,5 +55,6 @@ public class DoorOpen : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         animator.SetTrigger("Close");
+        GetComponent<AudioSource>().Play();
     }
 }

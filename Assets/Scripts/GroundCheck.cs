@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class GroundCheck : MonoBehaviour
 {
-    [SerializeField] PlayerController controller;
+    public static GroundCheck instance;
 
+    [SerializeField] PlayerController controller;
+    [SerializeField] AudioClip coinAudio;
     [SerializeField] TMP_Text coinsText;
-    public static int CoinCount = 0;
+    public int CoinCount = 0;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,7 +28,8 @@ public class GroundCheck : MonoBehaviour
         if (other.tag == "Coin")
         {
             CoinCount++;
-            coinsText.text = "Coins : " + CoinCount.ToString();
+            coinsText.text = "Coins : " + CoinCount.ToString() + "\\2";
+            GetComponent<AudioSource>().PlayOneShot(coinAudio);
             Destroy(other.gameObject);
         }
         controller.isGrounded = true;
